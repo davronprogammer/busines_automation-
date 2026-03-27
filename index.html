@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Food Demand Analysis | Uzbekistan Synthetic Dataset</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <nav class="topbar">
+                <div class="brand">
+                    <span class="brand-mark">FF</span>
+                    <div>
+                        <p class="eyebrow">Data Story Website</p>
+                        <h1>Fast Food Demand Analysis</h1>
+                    </div>
+                </div>
+                <a class="cta-link" href="#charts">Explore charts</a>
+            </nav>
+
+            <div class="hero-grid">
+                <section class="hero-copy">
+                    <p class="section-tag">Uzbekistan | 30-day synthetic market simulation</p>
+                    <h2>A visual business report built from 10,000 fast-food orders.</h2>
+                    <p class="lead">
+                        This website summarizes the generated fast food demand dataset for leading brands in Uzbekistan:
+                        <strong>Evos</strong>, <strong>Oqtepa Lavash</strong>, <strong>Max Way</strong>, <strong>KFC</strong>, and <strong>Feed Up</strong>.
+                        It explains what the data says, what each chart shows, and which business actions stand out.
+                    </p>
+
+                    <div class="hero-pills">
+                        <span>10,000 orders</span>
+                        <span>6 product categories</span>
+                        <span>5 restaurant brands</span>
+                        <span>4 visual reports</span>
+                    </div>
+                </section>
+
+                <aside class="hero-panel">
+                    <p class="panel-title">Study snapshot</p>
+                    <ul class="snapshot-list">
+                        <li><strong>Date range:</strong> 2026-02-26 to 2026-03-27</li>
+                        <li><strong>Total revenue:</strong> 612,881,000 UZS</li>
+                        <li><strong>Average order value:</strong> 61,288.10 UZS</li>
+                        <li><strong>Peak hour:</strong> 13:00</li>
+                        <li><strong>Top demand day:</strong> Saturday</li>
+                    </ul>
+                </aside>
+            </div>
+        </header>
+
+        <main>
+            <section class="metrics section-block" id="overview">
+                <div class="section-heading">
+                    <p class="section-tag">Overview</p>
+                    <h3>Key numbers from the dataset</h3>
+                </div>
+
+                <div class="metric-grid">
+                    <article class="metric-card">
+                        <p class="metric-label">Dataset size</p>
+                        <h4>10,000</h4>
+                        <p class="metric-note">Synthetic fast-food orders generated for one month.</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label">Total revenue</p>
+                        <h4>612.9M UZS</h4>
+                        <p class="metric-note">Combined sales from all companies and all products.</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label">Most popular product</p>
+                        <h4>Lavash</h4>
+                        <p class="metric-note">6,469 units sold across the dataset.</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label">Best company</p>
+                        <h4>Evos</h4>
+                        <p class="metric-note">158,483,000 UZS in revenue, highest in the sample.</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label">Peak hour</p>
+                        <h4>13:00</h4>
+                        <p class="metric-note">Lunch dominates overall order volume.</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label">Weekend pressure</p>
+                        <h4>503/day</h4>
+                        <p class="metric-note">Average weekend orders per day versus 272 on weekdays.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-heading">
+                    <p class="section-tag">Dataset details</p>
+                    <h3>What is inside the CSV</h3>
+                </div>
+
+                <div class="two-column">
+                    <article class="content-card">
+                        <h4>Columns</h4>
+                        <ul class="detail-list">
+                            <li><strong>company_name:</strong> Evos, Oqtepa Lavash, Max Way, KFC, Feed Up</li>
+                            <li><strong>order_time:</strong> random datetime within 30 days</li>
+                            <li><strong>product_name:</strong> Lavash, Burger, Pizza, Hot-dog, Fries, Cola</li>
+                            <li><strong>price:</strong> realistic range from 15,000 to 40,000 UZS</li>
+                            <li><strong>quantity:</strong> 1 to 5 units</li>
+                            <li><strong>total_price:</strong> price multiplied by quantity</li>
+                            <li><strong>customer_count:</strong> 1 to 3 customers per order</li>
+                            <li><strong>day_of_week and hour:</strong> extracted from order time</li>
+                        </ul>
+                    </article>
+
+                    <article class="content-card">
+                        <h4>Behavior built into the synthetic data</h4>
+                        <ul class="detail-list">
+                            <li>Lunch hours 11:00 to 14:00 and dinner hours 18:00 to 21:00 were weighted to generate more orders.</li>
+                            <li>Weekends were modeled to have higher demand intensity than weekdays.</li>
+                            <li>Lavash and Burger were intentionally made the most popular menu categories.</li>
+                            <li>The dataset was cleaned for duplicates, converted to proper types, and expanded with engineered features such as <code>is_weekend</code>, <code>time_period</code>, and <code>avg_order_value</code>.</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block" id="charts">
+                <div class="section-heading">
+                    <p class="section-tag">Chart gallery</p>
+                    <h3>Full explanation of every generated PNG</h3>
+                </div>
+
+                <div class="chart-grid">
+                    <article class="chart-card">
+                        <div class="chart-copy">
+                            <p class="chart-kicker">PNG 1</p>
+                            <h4>Top products</h4>
+                            <p>
+                                This chart compares the total quantity sold for each menu item. It shows which products drive order volume,
+                                not just revenue.
+                            </p>
+                            <ul class="detail-list">
+                                <li><strong>Main takeaway:</strong> Lavash is the top-selling product with 6,469 units, followed closely by Burger with 5,982 units.</li>
+                                <li><strong>Operational meaning:</strong> Core ingredients for Lavash and Burger should receive the strongest inventory planning.</li>
+                                <li><strong>Menu strategy:</strong> Pizza is a solid mid-tier product, while Cola has the weakest standalone volume.</li>
+                                <li><strong>Suggested action:</strong> Promote Fries and Cola as bundle add-ons instead of relying on them as primary demand drivers.</li>
+                            </ul>
+                        </div>
+                        <img src="top_products.png" alt="Bar chart showing top-selling products by quantity">
+                    </article>
+
+                    <article class="chart-card">
+                        <div class="chart-copy">
+                            <p class="chart-kicker">PNG 2</p>
+                            <h4>Orders by hour</h4>
+                            <p>
+                                This line chart tracks how many orders arrive during each hour of the day, making demand peaks easy to spot.
+                            </p>
+                            <ul class="detail-list">
+                                <li><strong>Main takeaway:</strong> 13:00 is the strongest hour with 892 orders.</li>
+                                <li><strong>Lunch surge:</strong> 11:00 to 14:00 is the dominant service window.</li>
+                                <li><strong>Dinner surge:</strong> 18:00 to 21:00 forms a second strong demand block.</li>
+                                <li><strong>Suggested action:</strong> Schedule more staff, prep inventory, and launch timed campaigns around lunch and dinner.</li>
+                            </ul>
+                        </div>
+                        <img src="orders_by_hour.png" alt="Line chart showing order count by hour">
+                    </article>
+
+                    <article class="chart-card">
+                        <div class="chart-copy">
+                            <p class="chart-kicker">PNG 3</p>
+                            <h4>Day vs hour heatmap</h4>
+                            <p>
+                                This heatmap combines day-of-week and hour-of-day demand, revealing exactly when customer traffic concentrates.
+                            </p>
+                            <ul class="detail-list">
+                                <li><strong>Main takeaway:</strong> Saturday is the strongest day overall, and lunch plus evening blocks are visibly hotter than other periods.</li>
+                                <li><strong>Planning value:</strong> This chart is useful for workforce scheduling, stock replenishment, and targeted promotions.</li>
+                                <li><strong>Pattern clarity:</strong> Quiet night hours contrast sharply with high-intensity lunch and dinner cells.</li>
+                                <li><strong>Suggested action:</strong> Use the weekend lunch pattern for combo campaigns and fast-service readiness.</li>
+                            </ul>
+                        </div>
+                        <img src="day_hour_heatmap.png" alt="Heatmap showing order density by day of week and hour">
+                    </article>
+
+                    <article class="chart-card">
+                        <div class="chart-copy">
+                            <p class="chart-kicker">PNG 4</p>
+                            <h4>Revenue by company</h4>
+                            <p>
+                                This bar chart compares total sales value for each restaurant brand in the dataset.
+                            </p>
+                            <ul class="detail-list">
+                                <li><strong>Main takeaway:</strong> Evos leads with 158,483,000 UZS in revenue.</li>
+                                <li><strong>Competitive view:</strong> Oqtepa Lavash and Max Way form a strong middle tier.</li>
+                                <li><strong>Lower performer:</strong> Feed Up generated the lowest revenue in this synthetic sample.</li>
+                                <li><strong>Suggested action:</strong> Compare product mix and promotional timing of top brands to identify what lifts sales.</li>
+                            </ul>
+                        </div>
+                        <img src="revenue_by_company.png" alt="Bar chart showing revenue by company">
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-heading">
+                    <p class="section-tag">Performance tables</p>
+                    <h3>Verified product and company results</h3>
+                </div>
+
+                <div class="two-column">
+                    <article class="content-card">
+                        <h4>Revenue by product</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity sold</th>
+                                    <th>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Lavash</td><td>6,469</td><td>194,907,500 UZS</td></tr>
+                                <tr><td>Burger</td><td>5,982</td><td>179,290,500 UZS</td></tr>
+                                <tr><td>Pizza</td><td>3,146</td><td>110,077,500 UZS</td></tr>
+                                <tr><td>Hot-dog</td><td>2,665</td><td>52,152,500 UZS</td></tr>
+                                <tr><td>Fries</td><td>2,540</td><td>46,793,500 UZS</td></tr>
+                                <tr><td>Cola</td><td>1,789</td><td>29,659,500 UZS</td></tr>
+                            </tbody>
+                        </table>
+                    </article>
+
+                    <article class="content-card">
+                        <h4>Revenue by company</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Revenue</th>
+                                    <th>Avg order value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Evos</td><td>158,483,000 UZS</td><td>27,014.51 UZS</td></tr>
+                                <tr><td>Oqtepa Lavash</td><td>134,471,000 UZS</td><td>27,104.56 UZS</td></tr>
+                                <tr><td>Max Way</td><td>127,641,500 UZS</td><td>27,139.87 UZS</td></tr>
+                                <tr><td>KFC</td><td>107,487,000 UZS</td><td>27,200.00 UZS</td></tr>
+                                <tr><td>Feed Up</td><td>84,798,500 UZS</td><td>26,844.33 UZS</td></tr>
+                            </tbody>
+                        </table>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-heading">
+                    <p class="section-tag">Insights</p>
+                    <h3>Business interpretation</h3>
+                </div>
+
+                <div class="insight-grid">
+                    <article class="insight-card">
+                        <h4>1. Lavash and Burger dominate the market</h4>
+                        <p>
+                            These two products clearly lead both unit volume and revenue. They should be the center of menu planning,
+                            campaign design, and supply chain prioritization.
+                        </p>
+                    </article>
+                    <article class="insight-card">
+                        <h4>2. Lunch is the strongest commercial moment</h4>
+                        <p>
+                            Demand is heaviest around midday, especially from 11:00 to 14:00. Fast service during that window likely matters
+                            more than late-night availability.
+                        </p>
+                    </article>
+                    <article class="insight-card">
+                        <h4>3. Weekends are stronger on a per-day basis</h4>
+                        <p>
+                            Weekend days average 503 orders and 30.76M UZS per day, while weekdays average 272 orders and 16.67M UZS per day.
+                            Weekend operations should therefore be more heavily staffed.
+                        </p>
+                    </article>
+                    <article class="insight-card">
+                        <h4>4. Revenue leadership is clear</h4>
+                        <p>
+                            Evos is the top-performing company in this synthetic market. The next closest brands, Oqtepa Lavash and Max Way,
+                            remain competitive but lag behind in total revenue.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-heading">
+                    <p class="section-tag">Files</p>
+                    <h3>Project assets available in this folder</h3>
+                </div>
+
+                <div class="file-grid">
+                    <article class="file-card">
+                        <h4>fast_food_data.csv</h4>
+                        <p>The complete synthetic dataset used for the analysis and website summary.</p>
+                    </article>
+                    <article class="file-card">
+                        <h4>top_products.png</h4>
+                        <p>Product volume comparison chart focused on demand quantity.</p>
+                    </article>
+                    <article class="file-card">
+                        <h4>orders_by_hour.png</h4>
+                        <p>Hourly order trend chart showing lunch and dinner peaks.</p>
+                    </article>
+                    <article class="file-card">
+                        <h4>day_hour_heatmap.png</h4>
+                        <p>Demand intensity map by weekday and hour for operations planning.</p>
+                    </article>
+                    <article class="file-card">
+                        <h4>revenue_by_company.png</h4>
+                        <p>Revenue comparison chart for all five fast-food brands.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
