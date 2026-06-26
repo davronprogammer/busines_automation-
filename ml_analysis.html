@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Analysis | Fast Food Demand Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f0e8;
+            --card: #ffffff;
+            --text: #1a1a1a;
+            --muted: #5a5a5a;
+            --accent: #2d6a4f;
+            --accent-light: #e8f5e9;
+            --border: #e0d8cc;
+            --danger: #d36a5f;
+            --danger-light: #fff0ed;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --radius-card: 16px;
+            --radius-chip: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", system-ui, sans-serif;
+            text-rendering: geometricPrecision;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        .page-shell {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 22px 0 48px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px 0 34px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            background: var(--accent);
+            color: #fff;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.08rem;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+        }
+
+        .brand-title {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.1rem, 2vw, 1.45rem);
+            line-height: 1.1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-link,
+        .lang-button {
+            min-height: 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-chip);
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text);
+            text-decoration: none;
+            padding: 9px 13px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .nav-link.active,
+        .lang-button.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .language-toggle {
+            display: inline-flex;
+            gap: 6px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .hero-copy,
+        .metric-card,
+        .step-card,
+        .content-card,
+        .chart-card,
+        .predictor-card,
+        .result-panel,
+        .insight-card,
+        .footer {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-copy {
+            padding: clamp(28px, 5vw, 54px);
+        }
+
+        .hero-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .section-tag,
+        .metric-label,
+        .chart-kicker,
+        .field-label {
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0;
+            color: var(--text);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.08;
+            letter-spacing: 0;
+        }
+
+        h1 {
+            max-width: 11ch;
+            margin-bottom: 18px;
+            font-size: clamp(2.7rem, 6vw, 5.8rem);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.1rem);
+        }
+
+        h3 {
+            font-size: 1.35rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.68;
+        }
+
+        .lead {
+            max-width: 68ch;
+            font-size: 1.05rem;
+        }
+
+        .metric-card {
+            min-height: 150px;
+            padding: 22px;
+        }
+
+        .metric-value {
+            margin: 0 0 6px;
+            color: var(--accent);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 4vw, 2.45rem);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .section-block {
+            margin-top: 42px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .section-heading p:last-child {
+            max-width: 64ch;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .step-card {
+            min-height: 188px;
+            padding: 20px;
+            transition-delay: var(--delay, 0ms);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .step-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .coefficient-card {
+            padding: 24px;
+        }
+
+        .bar-list {
+            display: grid;
+            gap: 13px;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: 150px minmax(0, 1fr) 90px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .bar-label {
+            color: var(--text);
+            font-size: 0.94rem;
+            font-weight: 800;
+            overflow-wrap: anywhere;
+        }
+
+        .bar-track {
+            height: 16px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #f0ebe3;
+        }
+
+        .bar-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--accent);
+            transition: width 900ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .bar-fill.negative {
+            background: var(--danger);
+        }
+
+        .bar-value {
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .bar-list.visible-bars .bar-fill {
+            width: var(--bar-width);
+        }
+
+        .insight-card {
+            margin-top: 16px;
+            padding: 20px;
+            background: var(--accent-light);
+            border-color: rgba(45, 106, 79, 0.24);
+        }
+
+        .insight-card strong {
+            color: var(--accent);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .chart-card {
+            overflow: hidden;
+        }
+
+        .chart-media {
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+            background: #f7f3ed;
+        }
+
+        .chart-media img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            padding: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .chart-card:hover .chart-media img {
+            transform: scale(1.02);
+        }
+
+        .chart-body {
+            padding: 20px;
+        }
+
+        .chart-body h3 {
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-flex;
+            max-width: 100%;
+            margin-top: 16px;
+            padding: 8px 10px;
+            border-radius: var(--radius-chip);
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 0.86rem;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .predictor-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+            gap: 18px;
+        }
+
+        .predictor-card,
+        .result-panel,
+        .coefficient-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+
+        .predictor-card {
+            padding: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .field {
+            display: grid;
+            gap: 8px;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            min-height: 46px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-chip);
+            background: #fff;
+            color: var(--text);
+            padding: 10px 12px;
+            outline: none;
+        }
+
+        select:focus,
+        input[type="number"]:focus,
+        input[type="range"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.12);
+        }
+
+        .range-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 46px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+
+        .range-value {
+            min-width: 54px;
+            border-radius: var(--radius-chip);
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 8px 10px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .predict-button {
+            width: 100%;
+            min-height: 50px;
+            margin-top: 18px;
+            border: 0;
+            border-radius: var(--radius-chip);
+            background: var(--accent);
+            color: #fff;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .predict-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(45, 106, 79, 0.2);
+        }
+
+        .result-panel {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 22px;
+            background:
+                linear-gradient(180deg, rgba(232, 245, 233, 0.65), rgba(255, 255, 255, 0.95)),
+                var(--card);
+        }
+
+        .result-value {
+            margin-top: 10px;
+            color: var(--accent);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2rem, 5vw, 3.35rem);
+            font-weight: 700;
+            line-height: 1.05;
+        }
+
+        .formula {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            background: #fbf8f3;
+            color: #33413c;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            white-space: pre;
+        }
+
+        .note {
+            padding: 14px 16px;
+            border-radius: var(--radius-card);
+            background: #fbf8f3;
+            border: 1px solid var(--border);
+        }
+
+        .footer {
+            margin-top: 42px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .predictor-layout,
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                max-width: 14ch;
+            }
+
+            .section-heading {
+                display: grid;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .page-shell {
+                width: min(100% - 20px, 1180px);
+                padding-top: 12px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-actions {
+                justify-content: flex-start;
+            }
+
+            .hero-metrics,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bar-row {
+                grid-template-columns: 1fr;
+                gap: 7px;
+            }
+
+            .bar-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header>
+            <nav class="topbar">
+                <div class="brand">
+                    <span class="brand-mark">FF</span>
+                    <p class="brand-title" data-i18n="brandTitle">Fast Food Demand Analysis</p>
+                </div>
+                <div class="nav-actions">
+                    <a class="nav-link" href="index.html" data-i18n="backLink">Back to overview</a>
+                    <a class="nav-link active" href="ml_analysis.html" data-i18n="currentLink">ML Analysis</a>
+                    <div class="language-toggle" aria-label="Language selector">
+                        <button class="lang-button active" type="button" data-lang="en">EN</button>
+                        <button class="lang-button" type="button" data-lang="uz">UZ</button>
+                    </div>
+                </div>
+            </nav>
+
+            <section class="hero reveal">
+                <div class="hero-copy">
+                    <p class="section-tag" data-i18n="heroTag">Machine Learning | Linear Regression</p>
+                    <h1 data-i18n="heroTitle">Predicting total order price with Linear Regression</h1>
+                    <p class="lead" data-i18n="heroLead">
+                        We trained a Linear Regression model on 10,000 fast-food orders to estimate total order price from menu, time, company, price, and quantity features. The model explains the core price pattern clearly and reaches a strong 94.80% R2 score on the test split.
+                    </p>
+                </div>
+
+                <div class="hero-metrics">
+                    <article class="metric-card">
+                        <p class="metric-label" data-i18n="metricAccuracy">Model accuracy</p>
+                        <p class="metric-value">94.80%</p>
+                        <p data-i18n="r2Label">R2 Score</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label" data-i18n="metricMae">Avg error</p>
+                        <p class="metric-value">6,026</p>
+                        <p data-i18n="uzs">UZS</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label" data-i18n="metricRmse">Root mean sq error</p>
+                        <p class="metric-value">8,305</p>
+                        <p data-i18n="uzs">UZS</p>
+                    </article>
+                    <article class="metric-card">
+                        <p class="metric-label" data-i18n="metricDataset">Training data</p>
+                        <p class="metric-value">10,000</p>
+                        <p data-i18n="rows">rows</p>
+                    </article>
+                </div>
+            </section>
+        </header>
+
+        <main>
+            <section class="section-block reveal" id="pipeline">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-tag" data-i18n="pipelineTag">Pipeline</p>
+                        <h2 data-i18n="pipelineTitle">How the model was built - 10 steps</h2>
+                    </div>
+                    <p data-i18n="pipelineLead">From raw CSV loading to a single test prediction, this timeline shows the complete modeling workflow.</p>
+                </div>
+                <div class="pipeline-grid" id="pipelineGrid"></div>
+            </section>
+
+            <section class="section-block reveal" id="coefficients">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-tag" data-i18n="coefficientsTag">Feature coefficients</p>
+                        <h2 data-i18n="coefficientsTitle">What the model learned - feature coefficients</h2>
+                    </div>
+                    <p data-i18n="coefficientsLead">Each coefficient shows how much total_price changes when that feature increases by 1 standard deviation.</p>
+                </div>
+                <div class="coefficient-card">
+                    <div class="bar-list" id="barList"></div>
+                    <article class="insight-card">
+                        <p data-i18n="coefficientInsight"><strong>Insight:</strong> quantity is 2x more influential than price because total_price = price x quantity.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-block reveal" id="charts">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-tag" data-i18n="chartsTag">Visual results</p>
+                        <h2 data-i18n="chartsTitle">Visual results - 3 analysis charts</h2>
+                    </div>
+                    <p data-i18n="chartsLead">The chart gallery connects statistical analysis, outlier checks, and model performance in one compact view.</p>
+                </div>
+                <div class="charts-grid" id="chartsGrid"></div>
+            </section>
+
+            <section class="section-block reveal" id="predictor">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-tag" data-i18n="predictorTag">Try the model</p>
+                        <h2 data-i18n="predictorTitle">Try the model - live price predictor</h2>
+                    </div>
+                    <p data-i18n="predictorLead">Enter order details below to see what the model would predict.</p>
+                </div>
+
+                <div class="predictor-layout">
+                    <form class="predictor-card" id="predictorForm">
+                        <div class="form-grid">
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldCompany">Company</span>
+                                <select id="company">
+                                    <option value="0">Evos</option>
+                                    <option value="1">Feed Up</option>
+                                    <option value="2">KFC</option>
+                                    <option value="3">Max Way</option>
+                                    <option value="4">Oqtepa Lavash</option>
+                                </select>
+                            </label>
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldProduct">Product</span>
+                                <select id="product">
+                                    <option value="0">Burger</option>
+                                    <option value="1">Cola</option>
+                                    <option value="2">Fries</option>
+                                    <option value="3">Hot-dog</option>
+                                    <option value="4">Lavash</option>
+                                    <option value="5">Pizza</option>
+                                </select>
+                            </label>
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldPrice">Price</span>
+                                <input id="price" type="number" min="15000" max="40000" step="500" value="30000">
+                            </label>
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldQuantity">Quantity</span>
+                                <select id="quantity">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </label>
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldDay">Day</span>
+                                <select id="dayEnc">
+                                    <option value="0" data-i18n-option="monday">Monday</option>
+                                    <option value="1" data-i18n-option="tuesday">Tuesday</option>
+                                    <option value="2" data-i18n-option="wednesday">Wednesday</option>
+                                    <option value="3" data-i18n-option="thursday">Thursday</option>
+                                    <option value="4" data-i18n-option="friday" selected>Friday</option>
+                                    <option value="5" data-i18n-option="saturday">Saturday</option>
+                                    <option value="6" data-i18n-option="sunday">Sunday</option>
+                                </select>
+                            </label>
+                            <label class="field">
+                                <span class="field-label" data-i18n="fieldHour">Hour</span>
+                                <span class="range-wrap">
+                                    <input id="hour" type="range" min="0" max="23" value="19">
+                                    <span class="range-value" id="hourValue">19:00</span>
+                                </span>
+                            </label>
+                        </div>
+                        <button class="predict-button" type="submit" data-i18n="predictButton">Predict price -></button>
+                    </form>
+
+                    <aside class="result-panel">
+                        <div>
+                            <p class="section-tag" data-i18n="resultTag">Prediction</p>
+                            <p class="result-value" id="predictionResult">Predicted: 0 UZS</p>
+                        </div>
+                        <p class="note" data-i18n="formulaNote">Actual formula: total_price = price x quantity, so for 30,000 x 2 = 60,000 UZS. The model predicts based on patterns, not exact math.</p>
+                        <pre class="formula" data-i18n="formulaText">predicted = 61776.62
++ price_scaled x 15984.80
++ quantity_scaled x 33289.61
++ customer_count_sc x 119.60
++ hour_scaled x 37.58
++ company_enc_scaled x (-73.36)
++ product_enc_scaled x 136.16
++ day_enc_scaled x (-100.48)
++ month_scaled x 8.28
++ day_scaled x 43.55</pre>
+                    </aside>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer reveal">
+            <p data-i18n="footerText">Fast Food ML Analysis | Linear Regression | R2=94.80%</p>
+        </footer>
+    </div>
+
+    <script>
+        const i18n = {
+            en: {
+                brandTitle: "Fast Food Demand Analysis",
+                backLink: "Back to overview",
+                currentLink: "ML Analysis",
+                heroTag: "Machine Learning | Linear Regression",
+                heroTitle: "Predicting total order price with Linear Regression",
+                heroLead: "We trained a Linear Regression model on 10,000 fast-food orders to estimate total order price from menu, time, company, price, and quantity features. The model explains the core price pattern clearly and reaches a strong 94.80% R2 score on the test split.",
+                metricAccuracy: "Model accuracy",
+                metricMae: "Avg error",
+                metricRmse: "Root mean sq error",
+                metricDataset: "Training data",
+                r2Label: "R2 Score",
+                uzs: "UZS",
+                rows: "rows",
+                pipelineTag: "Pipeline",
+                pipelineTitle: "How the model was built - 10 steps",
+                pipelineLead: "From raw CSV loading to a single test prediction, this timeline shows the complete modeling workflow.",
+                coefficientsTag: "Feature coefficients",
+                coefficientsTitle: "What the model learned - feature coefficients",
+                coefficientsLead: "Each coefficient shows how much total_price changes when that feature increases by 1 standard deviation.",
+                coefficientInsight: "<strong>Insight:</strong> quantity is 2x more influential than price because total_price = price x quantity.",
+                chartsTag: "Visual results",
+                chartsTitle: "Visual results - 3 analysis charts",
+                chartsLead: "The chart gallery connects statistical analysis, outlier checks, and model performance in one compact view.",
+                chartKicker: "Analysis chart",
+                predictorTag: "Try the model",
+                predictorTitle: "Try the model - live price predictor",
+                predictorLead: "Enter order details below to see what the model would predict.",
+                fieldCompany: "Company",
+                fieldProduct: "Product",
+                fieldPrice: "Price",
+                fieldQuantity: "Quantity",
+                fieldDay: "Day",
+                fieldHour: "Hour",
+                predictButton: "Predict price ->",
+                resultTag: "Prediction",
+                predictedPrefix: "Predicted",
+                formulaNote: "Actual formula: total_price = price x quantity, so for 30,000 x 2 = 60,000 UZS. The model predicts based on patterns, not exact math.",
+                formulaText: "predicted = 61776.62\n+ price_scaled x 15984.80\n+ quantity_scaled x 33289.61\n+ customer_count_sc x 119.60\n+ hour_scaled x 37.58\n+ company_enc_scaled x (-73.36)\n+ product_enc_scaled x 136.16\n+ day_enc_scaled x (-100.48)\n+ month_scaled x 8.28\n+ day_scaled x 43.55",
+                footerText: "Fast Food ML Analysis | Linear Regression | R2=94.80%",
+                monday: "Monday",
+                tuesday: "Tuesday",
+                wednesday: "Wednesday",
+                thursday: "Thursday",
+                friday: "Friday",
+                saturday: "Saturday",
+                sunday: "Sunday"
+            },
+            uz: {
+                brandTitle: "Fast Food Demand Analysis",
+                backLink: "Umumiy ko'rinishga qaytish",
+                currentLink: "ML tahlil",
+                heroTag: "Machine Learning | Linear Regression",
+                heroTitle: "Buyurtma narxini bashorat qilish: Linear Regression",
+                heroLead: "Biz 10,000 ta fast-food buyurtmasi asosida Linear Regression modelini o'qitdik. Model menyu, vaqt, kompaniya, narx va miqdor belgilaridan umumiy buyurtma narxini hisoblaydi hamda test qismida 94.80% R2 natijaga erishadi.",
+                metricAccuracy: "Model aniqligi",
+                metricMae: "O'rtacha xato",
+                metricRmse: "Kvadratik o'rtacha xato",
+                metricDataset: "O'qitish ma'lumoti",
+                r2Label: "R2 ko'rsatkichi",
+                uzs: "UZS",
+                rows: "qator",
+                pipelineTag: "Jarayon",
+                pipelineTitle: "Model qanday qurildi - 10 bosqich",
+                pipelineLead: "CSV faylni yuklashdan bitta test bashoratigacha bo'lgan to'liq model qurish jarayoni.",
+                coefficientsTag: "Feature koeffitsientlari",
+                coefficientsTitle: "Model nima o'rgandi - feature koeffitsientlari",
+                coefficientsLead: "Har bir koeffitsient feature 1 standart og'ishga oshganda total_price qancha o'zgarishini ko'rsatadi.",
+                coefficientInsight: "<strong>Xulosa:</strong> quantity price ga qaraganda 2x kuchliroq ta'sir qiladi, chunki total_price = price x quantity.",
+                chartsTag: "Vizual natijalar",
+                chartsTitle: "Vizual natijalar - 3 ta tahlil grafigi",
+                chartsLead: "Grafiklar statistik tahlil, outlier tekshiruvi va model sifatini ixcham ko'rinishda birlashtiradi.",
+                chartKicker: "Tahlil grafigi",
+                predictorTag: "Modelni sinab ko'ring",
+                predictorTitle: "Modelni sinab ko'ring - jonli narx bashorati",
+                predictorLead: "Model qanday narx bashorat qilishini ko'rish uchun buyurtma ma'lumotlarini kiriting.",
+                fieldCompany: "Kompaniya",
+                fieldProduct: "Mahsulot",
+                fieldPrice: "Narx",
+                fieldQuantity: "Miqdor",
+                fieldDay: "Kun",
+                fieldHour: "Soat",
+                predictButton: "Narxni bashorat qil ->",
+                resultTag: "Bashorat",
+                predictedPrefix: "Bashorat",
+                formulaNote: "Asl formula: total_price = price x quantity, masalan 30,000 x 2 = 60,000 UZS. Model aniq matematik ko'paytirishdan emas, ma'lumotdagi naqshlardan foydalanadi.",
+                formulaText: "predicted = 61776.62\n+ price_scaled x 15984.80\n+ quantity_scaled x 33289.61\n+ customer_count_sc x 119.60\n+ hour_scaled x 37.58\n+ company_enc_scaled x (-73.36)\n+ product_enc_scaled x 136.16\n+ day_enc_scaled x (-100.48)\n+ month_scaled x 8.28\n+ day_scaled x 43.55",
+                footerText: "Fast Food ML Analysis | Linear Regression | R2=94.80%",
+                monday: "Dushanba",
+                tuesday: "Seshanba",
+                wednesday: "Chorshanba",
+                thursday: "Payshanba",
+                friday: "Juma",
+                saturday: "Shanba",
+                sunday: "Yakshanba"
+            }
+        };
+
+        const steps = [
+            { enName: "Data Loading", uzName: "Ma'lumot yuklash", enText: "Loaded 10,000 rows, 9 columns from fast_food_data.csv", uzText: "fast_food_data.csv faylidan 10,000 qator va 9 ustun yuklandi" },
+            { enName: "Data Cleaning", uzName: "Tozalash", enText: "Verified 0 nulls, 0 duplicates; parsed datetime column", uzText: "0 null va 0 dublikat tasdiqlandi; datetime ustuni ajratildi" },
+            { enName: "Feature Encoding", uzName: "Encoding", enText: "Label Encoded: company (5 classes), product (6 classes), day (7 classes)", uzText: "Label Encoding: company (5 sinf), product (6 sinf), day (7 sinf)" },
+            { enName: "Feature Selection", uzName: "Feature tanlash", enText: "Chose 9 input features; target = total_price", uzText: "9 ta input feature tanlandi; target = total_price" },
+            { enName: "Train/Test Split", uzName: "Train/Test", enText: "80% train (8,000 rows) / 20% test (2,000 rows)", uzText: "80% train (8,000 qator) / 20% test (2,000 qator)" },
+            { enName: "Scaling", uzName: "Normallashtirish", enText: "Applied StandardScaler: mean=0, std=1 for all features", uzText: "Barcha feature uchun StandardScaler qo'llandi: mean=0, std=1" },
+            { enName: "Model Training", uzName: "Model o'qitish", enText: "Fitted LinearRegression() on scaled training data", uzText: "LinearRegression() scaled train ma'lumotida o'qitildi" },
+            { enName: "Coefficients", uzName: "Koeffitsientlar", enText: "quantity (+33,290) and price (+15,985) are top predictors", uzText: "quantity (+33,290) va price (+15,985) eng kuchli bashoratchilar" },
+            { enName: "Evaluation", uzName: "Baholash", enText: "R2=0.948, MAE=6,026 UZS, RMSE=8,305 UZS", uzText: "R2=0.948, MAE=6,026 UZS, RMSE=8,305 UZS" },
+            { enName: "Prediction", uzName: "Bashorat", enText: "KFC 2x Burger Friday 19:00 -> predicted 60,811 UZS (actual ~60,000)", uzText: "KFC 2x Burger Juma 19:00 -> bashorat 60,811 UZS (real ~60,000)" }
+        ];
+
+        const coefficients = [
+            { feature: "quantity", value: 33290 },
+            { feature: "price", value: 15985 },
+            { feature: "product_enc", value: 136 },
+            { feature: "customer_count", value: 120 },
+            { feature: "day_enc", value: -100 },
+            { feature: "company_enc", value: -73 },
+            { feature: "day", value: 43 },
+            { feature: "hour", value: 38 },
+            { feature: "month", value: 8 }
+        ];
+
+        const charts = [
+            {
+                image: "eda_sheet1_distribution.png",
+                enTitle: "Distribution Analysis",
+                uzTitle: "Taqsimot tahlili",
+                enText: "Histogram + KDE curves for all 5 numeric columns. Vertical lines show Mean (green), Median (orange), Mode (red). Pearson correlation heatmap in bottom-right.",
+                uzText: "5 ta raqamli ustun uchun histogram va KDE egri chiziqlari. Vertikal chiziqlar Mean (yashil), Median (to'q sariq), Mode (qizil) ni ko'rsatadi. Past o'ngda Pearson correlation heatmap bor.",
+                enBadge: "total_price skewness = 1.04 -> right-skewed",
+                uzBadge: "total_price skewness = 1.04 -> o'ngga og'gan"
+            },
+            {
+                image: "eda_sheet2_outliers.png",
+                enTitle: "Outlier Detection",
+                uzTitle: "Cheklovdan tashqari qiymatlar",
+                enText: "IQR method applied to all numeric columns. Box-plot + strip-plot combination highlights 243 outliers in total_price (2.43%) - all are legitimate high-quantity orders.",
+                uzText: "Barcha raqamli ustunlarga IQR metodi qo'llandi. Box-plot va strip-plot total_price dagi 243 outlierni (2.43%) ko'rsatadi - barchasi miqdori yuqori haqiqiy buyurtmalar.",
+                enBadge: "243 outliers -> quantity=5 orders",
+                uzBadge: "243 outlier -> quantity=5 buyurtmalar"
+            },
+            {
+                image: "linear_regression_results.png",
+                enTitle: "Regression Results",
+                uzTitle: "Regressiya natijalari",
+                enText: "Top-left: Actual vs Predicted scatter (ideal = red dashed line). Top-right: Residuals histogram centered near 0. Bottom-left: Feature importance bars. Bottom-right: Revenue by company.",
+                uzText: "Yuqori chap: Actual vs Predicted scatter (ideal = qizil kesik chiziq). Yuqori o'ng: residual histogram 0 atrofida. Past chap: feature importance barlari. Past o'ng: kompaniya bo'yicha revenue.",
+                enBadge: "R2 = 94.80% - excellent fit",
+                uzBadge: "R2 = 94.80% - juda yaxshi moslashuv"
+            }
+        ];
+
+        const scaler = {
+            means: { price: 27069.05, quantity: 2.2591, customer_count: 1.4971, hour: 14.04, company_enc: 2.02, product_enc: 2.47, day_enc: 3.01, month: 3.0, day: 14.0 },
+            stds: { price: 7080.41, quantity: 1.2182, customer_count: 0.6778, hour: 5.2296, company_enc: 1.415, product_enc: 1.755, day_enc: 2.01, month: 0.001, day: 8.8 },
+            coefficients: { price: 15984.80, quantity: 33289.61, customer_count: 119.60, hour: 37.58, company_enc: -73.36, product_enc: 136.16, day_enc: -100.48, month: 8.28, day: 43.55 },
+            intercept: 61776.62
+        };
+
+        let currentLang = "en";
+        let lastPrediction = 0;
+
+        const formatNumber = (value) => Math.round(value).toLocaleString("uz-UZ");
+
+        // Builds the pipeline timeline from bilingual data.
+        function renderSteps() {
+            const grid = document.getElementById("pipelineGrid");
+            grid.innerHTML = steps.map((step, index) => `
+                <article class="step-card reveal" style="--delay:${index * 100}ms">
+                    <span class="step-number">${index + 1}</span>
+                    <h3>${currentLang === "en" ? step.enName : step.uzName}</h3>
+                    <p>${currentLang === "en" ? step.enText : step.uzText}</p>
+                </article>
+            `).join("");
+            observeRevealItems();
+        }
+
+        // Builds the CSS bar chart and keeps animation target widths in custom properties.
+        function renderCoefficients() {
+            const max = Math.max(...coefficients.map((item) => Math.abs(item.value)));
+            const list = document.getElementById("barList");
+            list.innerHTML = coefficients.map((item) => {
+                const width = Math.max(2, (Math.abs(item.value) / max) * 100).toFixed(2);
+                const sign = item.value >= 0 ? "+" : "-";
+                const value = `${sign}${formatNumber(Math.abs(item.value))}`;
+                return `
+                    <div class="bar-row">
+                        <span class="bar-label">${item.feature}</span>
+                        <span class="bar-track">
+                            <span class="bar-fill ${item.value < 0 ? "negative" : ""}" style="--bar-width:${width}%"></span>
+                        </span>
+                        <span class="bar-value">${value}</span>
+                    </div>
+                `;
+            }).join("");
+            observeBarList();
+        }
+
+        // Builds chart cards from one data source so EN and UZ text stay in sync.
+        function renderCharts() {
+            const grid = document.getElementById("chartsGrid");
+            grid.innerHTML = charts.map((chart) => `
+                <article class="chart-card">
+                    <div class="chart-media">
+                        <img src="${chart.image}" alt="${currentLang === "en" ? chart.enTitle : chart.uzTitle}">
+                    </div>
+                    <div class="chart-body">
+                        <p class="chart-kicker">${i18n[currentLang].chartKicker}</p>
+                        <h3>${currentLang === "en" ? chart.enTitle : chart.uzTitle}</h3>
+                        <p>${currentLang === "en" ? chart.enText : chart.uzText}</p>
+                        <span class="badge">${currentLang === "en" ? chart.enBadge : chart.uzBadge}</span>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        // Swaps every visible static text node controlled by data attributes.
+        function applyLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.querySelectorAll("[data-i18n]").forEach((element) => {
+                const key = element.dataset.i18n;
+                if (!i18n[lang][key]) return;
+                if (element.dataset.i18n === "coefficientInsight") {
+                    element.innerHTML = i18n[lang][key];
+                } else {
+                    element.textContent = i18n[lang][key];
+                }
+            });
+            document.querySelectorAll("[data-i18n-option]").forEach((option) => {
+                option.textContent = i18n[lang][option.dataset.i18nOption];
+            });
+            document.querySelectorAll(".lang-button").forEach((button) => {
+                button.classList.toggle("active", button.dataset.lang === lang);
+            });
+            renderSteps();
+            renderCharts();
+            updatePredictionText(lastPrediction);
+        }
+
+        // Calculates the hardcoded Linear Regression equation with StandardScaler values.
+        function calculatePrediction() {
+            const values = {
+                price: Number(document.getElementById("price").value),
+                quantity: Number(document.getElementById("quantity").value),
+                customer_count: Math.min(3, Number(document.getElementById("quantity").value)),
+                hour: Number(document.getElementById("hour").value),
+                company_enc: Number(document.getElementById("company").value),
+                product_enc: Number(document.getElementById("product").value),
+                day_enc: Number(document.getElementById("dayEnc").value),
+                month: 3,
+                day: 14
+            };
+
+            return Object.keys(scaler.coefficients).reduce((total, key) => {
+                const scaledValue = (values[key] - scaler.means[key]) / scaler.stds[key];
+                return total + scaledValue * scaler.coefficients[key];
+            }, scaler.intercept);
+        }
+
+        // Updates the visible result without animation, useful after language changes.
+        function updatePredictionText(value) {
+            document.getElementById("predictionResult").textContent = `${i18n[currentLang].predictedPrefix}: ${formatNumber(value)} UZS`;
+        }
+
+        // Animates the prediction number from 0 to the current model output.
+        function animatePrediction(value) {
+            const start = performance.now();
+            const duration = 800;
+            const result = document.getElementById("predictionResult");
+
+            function tick(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                result.textContent = `${i18n[currentLang].predictedPrefix}: ${formatNumber(value * eased)} UZS`;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+
+            requestAnimationFrame(tick);
+        }
+
+        // Observes scroll-reveal elements, including dynamically rendered step cards.
+        function observeRevealItems() {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add("visible");
+                    obs.unobserve(entry.target);
+                });
+            }, { threshold: 0.15 });
+
+            document.querySelectorAll(".reveal:not(.visible)").forEach((element) => observer.observe(element));
+        }
+
+        // Starts coefficient bar animation once the chart enters the viewport.
+        function observeBarList() {
+            const list = document.getElementById("barList");
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add("visible-bars");
+                    obs.unobserve(entry.target);
+                });
+            }, { threshold: 0.15 });
+            observer.observe(list);
+        }
+
+        // Hooks up inputs, language toggle, and the first prediction.
+        function initPredictor() {
+            const hour = document.getElementById("hour");
+            const hourValue = document.getElementById("hourValue");
+            hour.addEventListener("input", () => {
+                hourValue.textContent = `${hour.value.padStart(2, "0")}:00`;
+            });
+
+            document.getElementById("predictorForm").addEventListener("submit", (event) => {
+                event.preventDefault();
+                lastPrediction = calculatePrediction();
+                animatePrediction(lastPrediction);
+            });
+
+            lastPrediction = calculatePrediction();
+            updatePredictionText(lastPrediction);
+        }
+
+        document.querySelectorAll(".lang-button").forEach((button) => {
+            button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+        });
+
+        renderSteps();
+        renderCoefficients();
+        renderCharts();
+        initPredictor();
+        applyLanguage("en");
+        observeRevealItems();
+    </script>
+</body>
+</html>
